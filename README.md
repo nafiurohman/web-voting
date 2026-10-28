@@ -1,60 +1,117 @@
-# Website Pemilihan Ketua ICP Periode 2026–2027
+# 🗳️ Web Voting — Pemilihan Ketua ICP 2026–2027
 
-Sistem e-voting modern, transparan, dan realtime untuk **Pemilihan Ketua International Class Program (ICP) Periode 2026–2027**, dibangun dengan **Vanilla PHP 8.2 (Clean Routing)**, **MySQL 8.0**, **Chart.js**, dan dikemas penuh dalam **Docker** pada port **2345**.
+Aplikasi e-voting berbasis **PHP 8.2 (native + routing)**, **MySQL 8.0**, dan **Docker**, dengan **live quick count realtime** (Server-Sent Events), diagram interaktif, panel admin bersidebar, serta export hasil ke **PDF** dan **Excel (XLSX)**.
 
----
-
-## 🌟 Aturan Akses & Keamanan Sistem
-
-1. **Akses Publik (Tanpa Login)**:
-   - **Bilik Suara (Voting)**: `/voting` (dan `/` otomatis diarahkan langsung ke bilik suara).
-   - **Login Panitia**: `/login` (Form login bersih hanya dengan placeholder).
-   - Seluruh halaman lain **TIDAK DAPAT DIAKSES** oleh umum. Jika diakses, sistem otomatis mengalihkan ke halaman `/login`.
-2. **Akses Panitia (Wajib Login)**:
-   - **Dashboard Live Quick Count & Diagram**: `/dashboard` (diagram batang, donat, & per angkatan).
-   - **Kelola Calon & Visi Misi**: `/admin/candidates`.
-   - **Daftar Mahasiswa Pemilih**: `/admin/voters`.
-   - **Pembersihan & Penghapusan Suara**:
-     - *Hapus per suara*: Menghapus pemilih tertentu secara instan dan suara kandidat otomatis berkurang 1.
-     - *Kosongkan Semua Suara*: Membersihkan seluruh riwayat pemilih dan mengembalikan suara semua calon ke 0.
-   - **Unduh Laporan (PDF / XLSX)**: `/export/pdf` dan `/export/xlsx`.
-3. **Kredensial Panitia**:
-   - Username: `icp`
-   - Password: `icp123`
-   *(Kolom input tidak lagi diisi otomatis, melainkan murni berupa placeholder).*
+![PHP](https://img.shields.io/badge/PHP-8.2-777BB4?logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
-## 🚀 Cara Menjalankan
+## ✨ Fitur
 
-### Menggunakan Skrip Kontrol:
+| Fitur | Keterangan |
+|---|---|
+| **Bilik suara publik** | Pemilih mengisi **Nama + NIM** → lanjut memilih kandidat → e-receipt |
+| **1 NIM = 1 suara** | NIM bersifat `UNIQUE` di database, divalidasi di frontend, backend, dan MySQL |
+| **Live Quick Count** | Update realtime via SSE (+ polling fallback 3 detik), tombol **Full Screen** untuk proyektor |
+| **Diagram interaktif** | Bar chart perolehan, doughnut chart persentase, line chart tren per jam, live feed pemilih |
+| **Layout dinamis** | Jumlah kolom kartu kandidat menyesuaikan jumlah calon (1/2/3/4+), mobile-friendly |
+| **Panel admin bersidebar** | Dashboard, kelola calon & visi-misi, data pemilih, export |
+| **Manajemen pemilih** | Hapus suara per pemilih (tally otomatis berkurang) atau kosongkan semua suara |
+| **Export** | PDF & XLSX, tersimpan juga di folder `./downloads/` |
+| **Clean URL** | Tanpa `.php` di URL (Apache `mod_rewrite` + front controller) |
+| **Offline-ready** | Tailwind, Chart.js, FontAwesome disajikan lokal → aman diakses via IP LAN tanpa internet |
 
-#### Di Windows (CMD / PowerShell):
-```cmd
-.\start.bat
-```
-Untuk menghentikan:
-```cmd
-.\stop.bat
-```
+---
 
-#### Di Linux / macOS / WSL / Git Bash:
+## 🚀 Quick Start
+
+**Prasyarat:** Docker Desktop / Docker Engine + Docker Compose sudah berjalan.
+
 ```bash
-chmod +x start.sh stop.sh
+git clone git@github.com:nafiurohman/web-voting.git
+cd web-voting
+
+# Linux / macOS / Git Bash
 ./start.sh
+
+# Windows (CMD / double-click)
+start.bat
 ```
-Untuk menghentikan:
+
+Buka **http://localhost:2345** (atau `http://<IP-SERVER>:2345` dari perangkat lain di jaringan yang sama).
+
+Menghentikan:
+
 ```bash
-./stop.sh
+./stop.sh      # atau stop.bat
+```
+
+> Data tetap tersimpan di Docker volume `icp_mysql_data`. Untuk reset total database: `docker compose down -v`.
+
+---
+
+## 🔐 Akun Default Panitia
+
+| Username | Password |
+|---|---|
+| `icp` | `icp123` |
+
+> ⚠️ **Segera ganti password** sebelum dipakai untuk pemilihan sungguhan (lihat [docs/DOKUMENTASI.md](docs/DOKUMENTASI.md#mengganti-password-admin)).
+
+---
+
+## 🧭 Halaman & Hak Akses
+
+| URL | Akses | Fungsi |
+|---|---|---|
+| `/` | Publik | Redirect ke `/voting` |
+| `/voting` | Publik | Bilik suara |
+| `/login` | Publik | Login panitia |
+| `/admin/dashboard` | Admin | Dashboard admin |
+| `/live-count` | Admin | Layar quick count realtime + fullscreen |
+| `/admin/candidates` | Admin | Kelola calon & visi-misi |
+| `/admin/voters` | Admin | Data pemilih, hapus / kosongkan suara |
+| `/export/pdf`, `/export/xlsx` | Admin | Unduh laporan |
+
+Semua halaman non-publik otomatis diarahkan ke `/login` bila belum login.
+
+---
+
+## 📁 Struktur Proyek
+
+```
+.
+├── Dockerfile               # PHP 8.2 + Apache (mod_rewrite, mod_headers)
+├── docker-compose.yml       # Service web (port 2345) + MySQL 8.0
+├── mysql-init/01-init.sql   # Skema & seed data
+├── public/                  # Document root
+│   ├── index.php            # Front controller / router
+│   ├── .htaccess            # Clean URL + CORS
+│   ├── assets/              # CSS, JS, font lokal, upload foto
+│   └── views/               # Template halaman (publik & admin)
+├── src/
+│   ├── Config/Database.php
+│   ├── Controllers/         # Auth, Voting, Dashboard, Admin, Export
+│   ├── Models/              # User, Candidate, Vote
+│   └── Utils/               # FPDF, PdfReport, SimpleXLSXWriter
+├── downloads/               # Hasil export PDF/XLSX
+├── docs/DOKUMENTASI.md      # Dokumentasi teknis lengkap
+├── start.sh / start.bat
+└── stop.sh  / stop.bat
 ```
 
 ---
 
-## 🌐 Daftar Rute URL
+## 📚 Dokumentasi Lengkap
 
-- **Bilik Suara (Publik)**: [http://localhost:2345/voting](http://localhost:2345/voting) (Akses utama pemilih)
-- **Login Panitia**: [http://localhost:2345/login](http://localhost:2345/login)
-- **Dashboard Quick Count (Khusus Panitia)**: [http://localhost:2345/dashboard](http://localhost:2345/dashboard)
-- **Daftar & Hapus Pemilih**: [http://localhost:2345/admin/voters](http://localhost:2345/admin/voters)
-- **Unduh PDF**: [http://localhost:2345/export/pdf](http://localhost:2345/export/pdf)
-- **Unduh Excel**: [http://localhost:2345/export/xlsx](http://localhost:2345/export/xlsx)
+Arsitektur, alur voting, skema database, API, konfigurasi, dan troubleshooting:
+➡️ **[docs/DOKUMENTASI.md](docs/DOKUMENTASI.md)**
+
+---
+
+## 📄 Lisensi
+
+Dirilis di bawah **MIT License** — lihat [LICENSE](LICENSE).
