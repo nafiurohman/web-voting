@@ -1,9 +1,9 @@
 <?php
 $pageTitle = $isEdit ? 'Edit Calon Ketua' : 'Tambah Calon Ketua Baru';
-require __DIR__ . '/../layout/header.php';
+require __DIR__ . '/../layout/admin_header.php';
 ?>
 
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-4xl mx-auto space-y-6">
     <div class="mb-8 pb-4 border-b border-slate-800">
         <a href="/admin/candidates" class="text-xs text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1.5 mb-2">
             <i class="fa-solid fa-arrow-left text-[10px]"></i>
@@ -127,4 +127,4 @@ require __DIR__ . '/../layout/header.php';
     </div>
 </div>
 
-<?php require __DIR__ . '/../layout/footer.php'; ?>
+<?php require __DIR__ . '/../layout/admin_footer.php'; ?>

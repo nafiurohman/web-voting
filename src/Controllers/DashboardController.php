@@ -26,7 +26,7 @@ class DashboardController
         $totalVotes = $results['total_votes'];
         $candidates = $results['candidates'];
 
-        require __DIR__ . '/../../public/views/dashboard.php';
+        require __DIR__ . '/../../public/views/live_count.php';
     }
 
     public function apiResults(): void

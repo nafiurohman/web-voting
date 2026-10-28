@@ -1,9 +1,9 @@
 <?php
 $pageTitle = 'Kelola Calon Ketua';
-require __DIR__ . '/../layout/header.php';
+require __DIR__ . '/../layout/admin_header.php';
 ?>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-800">
         <div>
             <div class="flex items-center gap-2 mb-1">
@@ -106,4 +106,4 @@ require __DIR__ . '/../layout/header.php';
     </div>
 </div>
 
-<?php require __DIR__ . '/../layout/footer.php'; ?>
+<?php require __DIR__ . '/../layout/admin_footer.php'; ?>

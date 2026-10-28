@@ -7,10 +7,10 @@ $currentUser = $_SESSION['user'] ?? null;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= isset($pageTitle) ? htmlspecialchars($pageTitle) . ' - ' : '' ?>Pemilihan Ketua ICP 2026-2027</title>
-    <!-- Standalone Local CSS (Always loaded, no external blocking) -->
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6 (Local Offline) -->
+    <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
+    <!-- Tailwind CSS (Local Runtime Compiler) -->
+    <script src="/assets/tailwind.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -30,19 +30,15 @@ $currentUser = $_SESSION['user'] ?? null;
             }
         }
     </script>
-    <!-- FontAwesome 6 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Google Fonts Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <!-- Canvas Confetti -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <!-- Chart.js (Local Offline) -->
+    <script src="/assets/chart.umd.min.js"></script>
+    <!-- Canvas Confetti (Local Offline) -->
+    <script src="/assets/confetti.browser.min.js"></script>
+    <!-- Standalone Local CSS -->
+    <link rel="stylesheet" href="/assets/css/style.css">
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         .glass-panel {
             background: rgba(30, 41, 59, 0.75);

@@ -65,6 +65,10 @@ try {
             break;
 
         case '/dashboard':
+            header('Location: /admin/dashboard');
+            exit;
+
+        case '/live-count':
             (new App\Controllers\DashboardController())->index();
             break;
 

@@ -21,7 +21,7 @@ class AdminController
     public function dashboard(): void
     {
         $results = Vote::getResults();
-        $batchStats = Vote::getBatchBreakdown();
+        $timelineStats = Vote::getTimelineBreakdown();
         $recentVoters = Vote::getRecentVoters(6);
         $totalCandidates = count($results['candidates']);
         $totalVotes = $results['total_votes'];
