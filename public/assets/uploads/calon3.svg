@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow3" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#78350f" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect width="400" height="400" fill="url(#grad3)" rx="24"/>
+  <circle cx="200" cy="150" r="70" fill="#ffffff" opacity="0.95" filter="url(#shadow3)"/>
+  <path d="M120 330 C120 245 280 245 280 330 Z" fill="#ffffff" opacity="0.9" />
+  <circle cx="160" cy="140" r="10" fill="#78350f"/>
+  <circle cx="240" cy="140" r="10" fill="#78350f"/>
+  <path d="M175 180 Q200 200 225 180" stroke="#78350f" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <rect x="35" y="35" width="60" height="36" rx="8" fill="#ffffff" />
+  <text x="65" y="60" fill="#d97706" font-size="20" font-weight="900" font-family="sans-serif" text-anchor="middle">#03</text>
+  <rect x="0" y="340" width="400" height="60" fill="#0f172a" opacity="0.6"/>
+  <text x="200" y="378" fill="#ffffff" font-size="18" font-weight="bold" font-family="sans-serif" text-anchor="middle">Farhan &amp; Cindy</text>
+</svg>

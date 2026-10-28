@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: icp_voting_web
+    restart: unless-stopped
+    ports:
+      - "2345:80"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: icp_voting
+      DB_USER: icp_user
+      DB_PASS: icp_password
+    volumes:
+      - ./downloads:/var/www/html/downloads
+      - ./public/assets/uploads:/var/www/html/public/assets/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - icp_network
+
+  db:
+    image: mysql:8.0
+    container_name: icp_voting_db
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: icp_root_password
+      MYSQL_DATABASE: icp_voting
+      MYSQL_USER: icp_user
+      MYSQL_PASSWORD: icp_password
+    volumes:
+      - icp_mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-picp_root_password"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 15s
+    networks:
+      - icp_network
+
+volumes:
+  icp_mysql_data:
+    driver: local
+
+networks:
+  icp_network:
+    driver: bridge

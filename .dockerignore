@@ -1,0 +1,5 @@
+.git
+.gitignore
+.dockerignore
+downloads/*.pdf
+downloads/*.xlsx
